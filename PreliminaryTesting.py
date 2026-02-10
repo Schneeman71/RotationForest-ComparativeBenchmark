@@ -377,4 +377,5 @@ if __name__ == "__main__":
         filename = "results/benchmark_official_v1.csv"
         df.to_csv(filename, index=False)
         print(f"\nProcessing Complete. Saved {len(df)} rows to {filename}")
+
         print(df[["tablename", "model_type", "random_state", "score", "time_taken"]].head())
