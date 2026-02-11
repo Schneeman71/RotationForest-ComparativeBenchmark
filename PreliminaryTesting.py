@@ -25,7 +25,7 @@ SEEDS = [0, 1, 2, 3, 4]   # Seeds to iterate over
 
 # Dataset Loading
 # Set to -1 to load ALL datasets in a suite. Set to integer (e.g., 5) to limit.
-DATASET_LIMIT = 1         
+DATASET_LIMIT = 30         
 MAX_INSTANCES = 15000     # Skip datasets larger than this
 MAX_FLATTENED_FEATURES = 12000 
 
@@ -379,3 +379,4 @@ if __name__ == "__main__":
         print(f"\nProcessing Complete. Saved {len(df)} rows to {filename}")
 
         print(df[["tablename", "model_type", "random_state", "score", "time_taken"]].head())
+
