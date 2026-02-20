@@ -17,31 +17,26 @@ from aeon.classification.sklearn import RotationForestClassifier
 from aeon.regression.sklearn import RotationForestRegressor
 from aeon.datasets import (load_classification, load_regression, tsc_datasets, tser_datasets)
 
-# Hyperparameters and Configuration
+# --- Hyperparameters and Configuration ---
 
 # Hardware / Processing
 N_JOBS = -1               # -1 = use all cores
 SEEDS = [0, 1, 2, 3, 4]   # Seeds to iterate over
 
 # Dataset Loading
-# Set to -1 to load ALL datasets in a suite. Set to integer (e.g., 5) to limit.
-DATASET_LIMIT = 30         
-MAX_INSTANCES = 15000     # Skip datasets larger than this
-MAX_FLATTENED_FEATURES = 12000 
+DATASET_LIMIT = -1         
 
 # Model Hyperparameters
 N_ESTIMATORS_RF = 100     # Random Forest Trees
 N_ESTIMATORS_ET = 100     # Extra Trees (Number of trees)
-N_ESTIMATORS_ROTF = 50    # Rotation Forest Trees (Usually requires fewer than RF)
-ROTF_FEATURE_LIMIT = 1000 # Binning threshold for RotF
+N_ESTIMATORS_ROTF = 50    # Rotation Forest Trees 
+ROTF_TIME_LIMIT = 20      # Max minutes RotF is allowed to build trees
 
 # Preprocessing
 ENCODER_TYPE = "onehot"   # Alternative = 'target' (for high cardinality data)
 
-class SkipDataset(Exception):
-    pass
 
-# Helper Functions for Preprocessing
+# --- Helper Functions for Preprocessing ---
 
 def get_feature_type(X):
     """Determines if features are Continuous, Categorical, or Mixed."""
@@ -77,7 +72,8 @@ def get_imbalance_metrics(y, task):
     except Exception:
         return "Error"
 
-# Dataset Loader
+
+# --- Dataset Loaders ---
 
 def load_openml_suite(suite_id, task, suite_name, limit=2):
     suite = openml.study.get_suite(suite_id)
@@ -97,9 +93,6 @@ def load_openml_suite(suite_id, task, suite_name, limit=2):
             task_obj = openml.tasks.get_task(task_id)
             dataset = task_obj.get_dataset()
 
-            if dataset.qualities.get('NumberOfInstances', 0) > MAX_INSTANCES:
-                continue
-
             X, y, _, _ = dataset.get_data(
                 target=dataset.default_target_attribute,
                 dataset_format="dataframe"
@@ -107,8 +100,6 @@ def load_openml_suite(suite_id, task, suite_name, limit=2):
 
             if task == "regression" and not pd.api.types.is_numeric_dtype(y):
                 continue
-            
-            if X.shape[0] > MAX_INSTANCES: continue
 
             train_idx, test_idx = task_obj.get_train_test_split_indices(fold=0)
 
@@ -140,8 +131,6 @@ def load_aeon_tsc_suite(limit=5):
             name = next(names)
             X_train, y_train = load_classification(name, split="train")
             X_test, y_test = load_classification(name, split="test")
-            
-            if len(X_train) + len(X_test) > MAX_INSTANCES: continue
 
             datasets.append({
                 "id": f"tsc_{name}",
@@ -167,8 +156,6 @@ def load_aeon_tser_suite(limit=5):
             X_train, y_train = load_regression(name, split="train")
             X_test, y_test = load_regression(name, split="test")
 
-            if len(X_train) + len(X_test) > MAX_INSTANCES: continue
-
             datasets.append({
                 "id": f"tser_{name}",
                 "name": name,
@@ -182,23 +169,12 @@ def load_aeon_tser_suite(limit=5):
         except Exception: continue
     return datasets
 
+
 # --- Preprocessing Utilities ---
 
 def flatten_time_series_fast(X):
     n, c, t = X.shape
-    if (c * t) > MAX_FLATTENED_FEATURES:
-        raise SkipDataset(f"Too many features ({c*t})")
     return X.reshape(n, c * t)
-
-def destructive_binning(X, target_length=500):
-    n_features = X.shape[1]
-    if n_features <= target_length: return X
-    bin_size = n_features // target_length
-    if bin_size < 2: return X
-    cutoff = (n_features // bin_size) * bin_size
-    X_trimmed = X[:, :cutoff]
-    X_reshaped = X_trimmed.reshape(X.shape[0], -1, bin_size)
-    return X_reshaped.mean(axis=2)
 
 def ensure_numeric_format(X, data_type):
     if data_type == "tabular": return X
@@ -224,7 +200,6 @@ def make_smart_preprocessor(X, task):
 
     num_pipe = Pipeline([("imputer", SimpleImputer(strategy="median")), ("scaler", StandardScaler())])
     
-    # Encoder Logic Selection (default to onehot if 'target' is not specified)
     if ENCODER_TYPE == "target":
         encoder = TargetEncoder(target_type=te_type, random_state=42)
     else:
@@ -241,7 +216,6 @@ def make_smart_preprocessor(X, task):
     ])
 
 def make_model(model_name, task, preprocessor, seed):
-    
     if model_name == "rf":
         est_class = RandomForestClassifier if task == "classification" else RandomForestRegressor
         model = est_class(n_estimators=N_ESTIMATORS_RF, n_jobs=1, random_state=seed)
@@ -250,12 +224,18 @@ def make_model(model_name, task, preprocessor, seed):
         model = est_class(n_estimators=N_ESTIMATORS_ET, n_jobs=1, random_state=seed)
     elif model_name == "rotf":
         est_class = RotationForestClassifier if task == "classification" else RotationForestRegressor
-        model = est_class(n_estimators=N_ESTIMATORS_ROTF, n_jobs=1, random_state=seed)
+        model = est_class(
+            n_estimators=N_ESTIMATORS_ROTF, 
+            time_limit_in_minutes=ROTF_TIME_LIMIT, 
+            n_jobs=1, 
+            random_state=seed
+        )
     
     return Pipeline([
         ("preprocess", preprocessor),
         ("model", model) 
     ])
+
 
 # --- Worker Function for Joblib ---
 
@@ -288,25 +268,18 @@ def process_benchmark_task(ds, model_name, seed):
                 X_test_orig = X_test_orig[test_mask]
                 y_test = le.transform(ds["y_test"][test_mask])
 
-        # 4. Binning for RotF on Large TS
-        X_tr_curr, X_te_curr = X_train_orig, X_test_orig
-        is_ts = isinstance(X_tr_curr, np.ndarray)
-        if model_name == "rotf" and is_ts and X_tr_curr.shape[1] > ROTF_FEATURE_LIMIT:
-            X_tr_curr = destructive_binning(X_tr_curr, target_length=ROTF_FEATURE_LIMIT)
-            X_te_curr = destructive_binning(X_te_curr, target_length=ROTF_FEATURE_LIMIT)
-
-        # 5. Extract Metadata
+        # 4. Extract Metadata
         feature_type = get_feature_type(ds["X_train"]) 
         imbalance_ratio = get_imbalance_metrics(ds["y_train"], ds["task"])
-        rows = X_tr_curr.shape[0] + X_te_curr.shape[0]
-        cols = X_tr_curr.shape[1]
+        rows = X_train_orig.shape[0] + X_test_orig.shape[0]
+        cols = X_train_orig.shape[1]
 
-        # 6. Build & Run
-        preprocessor = make_smart_preprocessor(X_tr_curr, ds["task"])
+        # 5. Build & Run
+        preprocessor = make_smart_preprocessor(X_train_orig, ds["task"])
         pipe = make_model(model_name, ds["task"], preprocessor, seed)
         
-        pipe.fit(X_tr_curr, y_train)
-        preds = pipe.predict(X_te_curr)
+        pipe.fit(X_train_orig, y_train)
+        preds = pipe.predict(X_test_orig)
         
         if ds["task"] == "classification":
             metric_val = accuracy_score(y_test, preds)
@@ -332,12 +305,11 @@ def process_benchmark_task(ds, model_name, seed):
             "status": "success"
         }
 
-    except SkipDataset as e:
-        return {"tablename": ds["name"], "model_type": model_name, "random_state": seed, "status": "skipped", "error": str(e)}
     except Exception as e:
         return {"tablename": ds["name"], "model_type": model_name, "random_state": seed, "status": "failed", "error": str(e)}
 
-# Primary Execution
+
+# --- Primary Execution ---
 
 if __name__ == "__main__":
     print("Loading datasets...")
@@ -357,7 +329,7 @@ if __name__ == "__main__":
     print(f"Using Encoder: {ENCODER_TYPE}")
     print("Starting Parallel Benchmarking...")
 
-# Create comprehensive task list
+    # Create comprehensive task list
     tasks = [
         (ds, model, seed)
         for ds in datasets
@@ -365,12 +337,12 @@ if __name__ == "__main__":
         for seed in SEEDS
     ]
 
-# Run Parallel
+    # Run Parallel
     results = Parallel(n_jobs=N_JOBS, verbose=5)(
         delayed(process_benchmark_task)(ds, model, seed) for ds, model, seed in tasks
     )
 
-# Save Results
+    # Save Results
     df = pd.DataFrame(results)
     if not df.empty:
         os.makedirs("results", exist_ok=True)
@@ -379,4 +351,3 @@ if __name__ == "__main__":
         print(f"\nProcessing Complete. Saved {len(df)} rows to {filename}")
 
         print(df[["tablename", "model_type", "random_state", "score", "time_taken"]].head())
-
