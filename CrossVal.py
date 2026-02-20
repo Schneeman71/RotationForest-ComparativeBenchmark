@@ -113,9 +113,9 @@ def process_benchmark_grid(ds, model_name, seed):
 if __name__ == "__main__":
     # === CONFIGURATION BLOCK ===
     SELECTED_MODEL = "rf"  # "rf", "et", or "rotf"
-    BENCHMARKS = ["OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER"]
+    BENCHMARKS = ["OpenML-CC18", "OpenML-297"]
     # ===========================
-    
+    # "AEON-TSC", "AEON-TSER"
     # Generate a master timestamp for this entire run batch to prevent overwrites
     run_timestamp = time.strftime("%Y%m%d_%H%M%S")
     os.makedirs("results", exist_ok=True)
