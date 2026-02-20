@@ -27,9 +27,9 @@ SEEDS = [0, 1, 2, 3, 4]   # Seeds to iterate over
 DATASET_LIMIT = -1         
 
 # Model Hyperparameters
-N_ESTIMATORS_RF = 100     # Random Forest Trees
-N_ESTIMATORS_ET = 100     # Extra Trees (Number of trees)
-N_ESTIMATORS_ROTF = 50    # Rotation Forest Trees 
+N_ESTIMATORS_RF = 50     # Random Forest Trees
+N_ESTIMATORS_ET = 50     # Extra Trees (Number of trees)
+N_ESTIMATORS_ROTF = 25    # Rotation Forest Trees 
 ROTF_TIME_LIMIT = 20      # Max minutes RotF is allowed to build trees
 
 # Preprocessing

@@ -19,7 +19,7 @@ def get_param_grid(model_name):
     if model_name in ["rf", "et"]:
         return {
             "model__max_features": ["sqrt", 0.3, 0.5],
-            "model__max_depth": [None, 20, 40],
+            "model__max_depth": [20, 40],
             "model__min_samples_leaf": [1, 2, 3]
         }
     elif model_name == "rotf":
