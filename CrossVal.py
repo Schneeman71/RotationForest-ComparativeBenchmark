@@ -14,7 +14,7 @@ from PreliminaryTesting import (
 )
 
 # --- Configuration ---
-MAX_CELLS = 5_000_000  # Safety Cap: 5 million data points (Rows * Cols)
+MAX_CELLS = 1_000_000  # Safety Cap: 1 million data points (Rows * Cols)
 
 # --- Hyperparameter Search Spaces ---
 
@@ -123,7 +123,7 @@ def process_benchmark_grid(ds, model_name, seed):
 
 if __name__ == "__main__":
     # === CONFIGURATION BLOCK ===
-    SELECTED_MODEL = "rotf"  # "rf", "et", or "rotf"
+    SELECTED_MODEL = "et"  # "rf", "et", or "rotf"
     BENCHMARKS = ["OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER"]
     # ===========================
     
