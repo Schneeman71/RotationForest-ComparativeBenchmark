@@ -6,26 +6,37 @@ from joblib import Parallel, delayed
 from sklearn.model_selection import GridSearchCV, KFold, StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
 
+# Import utilities from your existing testing file
 from PreliminaryTesting import (
     load_openml_suite, load_aeon_tsc_suite, load_aeon_tser_suite,
     ensure_numeric_format, make_smart_preprocessor, make_model,
     SEEDS, DATASET_LIMIT, N_JOBS
 )
 
+# --- Configuration ---
+MAX_CELLS = 5_000_000  # Safety Cap: 5 million data points (Rows * Cols)
+
 # --- Hyperparameter Search Spaces ---
 
 def get_param_grid(model_name):
-    """Defines the search space for tuning."""
+    """
+    Defines the search space for tuning.
+    Optimized to test specific hypotheses about Data Structure, Noise, and Redundancy.
+    """
     if model_name in ["rf", "et"]:
         return {
-            "model__max_features": ["sqrt", 0.3, 0.5],
-            "model__max_depth": [20, 40],
-            "model__min_samples_leaf": [1, 2, 3]
+            # Tests Feature Visibility: "sqrt" (Standard) vs 0.5 (Aggressive) vs 1.0 (Bagging/Regression)
+            "model__max_features": ["sqrt", 0.5, 1.0],
+            # Tests Smoothing: 1 (High Variance) vs 5 (Smoothed/Noisy Data)
+            "model__min_samples_leaf": [1, 5]
         }
     elif model_name == "rotf":
         return {
-            "model__n_estimators": [30, 50, 70],
-            "model__max_group": [3, 5, 7],
+            # 20 vs 50: Checks if added computation yields diminishing returns
+            "model__n_estimators": [20, 50],
+            # 3 vs 7: Checks Local (3) vs Global (7) structure preference
+            "model__max_group": [3, 7],
+            # 0.25 -> 0.75: Checks Robustness to Redundancy
             "model__remove_proportion": [0.25, 0.5, 0.75]
         }
     return {}
@@ -112,11 +123,11 @@ def process_benchmark_grid(ds, model_name, seed):
 
 if __name__ == "__main__":
     # === CONFIGURATION BLOCK ===
-    SELECTED_MODEL = "rf"  # "rf", "et", or "rotf"
-    BENCHMARKS = ["OpenML-CC18", "OpenML-297"]
+    SELECTED_MODEL = "rotf"  # "rf", "et", or "rotf"
+    BENCHMARKS = ["OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER"]
     # ===========================
-    # "AEON-TSC", "AEON-TSER"
-    # Generate a master timestamp for this entire run batch to prevent overwrites
+    
+    # Generate a master timestamp for this entire run batch
     run_timestamp = time.strftime("%Y%m%d_%H%M%S")
     os.makedirs("results", exist_ok=True)
     
@@ -127,6 +138,7 @@ if __name__ == "__main__":
         print(f"   PROCESSING BENCHMARK: {benchmark}")
         print(f"{'='*60}")
         
+        # 1. Load Datasets
         datasets = []
         if benchmark == "OpenML-CC18":
             datasets += load_openml_suite(99, "classification", "OpenML-CC18", limit=DATASET_LIMIT)
@@ -140,8 +152,36 @@ if __name__ == "__main__":
         if not datasets:
             print(f"Warning: No datasets loaded for {benchmark}. Skipping...")
             continue
+            
+        # 2. Filter Datasets (Complexity Guardrail)
+        valid_datasets = []
+        for ds in datasets:
+            # Quick shape check (approximate for TS data if not flat yet)
+            n_rows = len(ds["X_train"])
+            try:
+                n_cols = ds["X_train"].shape[1]
+            except:
+                n_cols = 1 # Fallback
+            
+            # If strictly tabular/numpy, get exact size
+            if isinstance(ds["X_train"], (pd.DataFrame, np.ndarray)):
+                size = ds["X_train"].size
+            else:
+                size = n_rows * n_cols
+                
+            if size > MAX_CELLS:
+                print(f"  -> Skipping {ds['name']} (Size: {size} > {MAX_CELLS}) to save runtime.")
+            else:
+                valid_datasets.append(ds)
+        
+        if not valid_datasets:
+            print(f"Error: All datasets in {benchmark} were filtered out by size constraint.")
+            continue
 
-        tasks = [(ds, SELECTED_MODEL, s) for ds in datasets for s in SEEDS]
+        print(f"Selected {len(valid_datasets)} datasets after filtering.")
+        
+        # 3. Create Tasks
+        tasks = [(ds, SELECTED_MODEL, s) for ds in valid_datasets for s in SEEDS]
         
         print(f"Executing GridSearch across {len(tasks)} tasks...")
         results = Parallel(n_jobs=N_JOBS, verbose=10)(
@@ -164,7 +204,16 @@ if __name__ == "__main__":
         param_cols = [c for c in df_results.columns if c.startswith("{") and not c.startswith("time_")]
         
         # --- Calculate Average Ranks ---
-        ascending_rank = True if "regression" in [d["task"] for d in datasets[:1]] else False
+        # For regression, lower score (MAE/RMSE) is better, but scikit-learn uses negative RMSE.
+        # Neg RMSE: -5 is "better" than -10. So higher is better (ascending=False).
+        # Accuracy: Higher is better (ascending=False).
+        # Wait - scikit-learn grid search results are maximized. 
+        # But we stored abs(score) for regression in process_benchmark_grid.
+        # If regression score is MAE/RMSE (positive), lower is better -> ascending=True
+        # If classification score is Acc (positive), higher is better -> ascending=False
+        
+        is_regression = "regression" in [d["task"] for d in valid_datasets[:1]]
+        ascending_rank = True if is_regression else False
         
         # Group by dataset and average over seeds
         df_mean_seeds = df_results.groupby("dataset")[param_cols].mean()
@@ -180,8 +229,8 @@ if __name__ == "__main__":
         print("-" * 50)
         print(f"BENCHMARK COMPLETED: {benchmark} | MODEL: {SELECTED_MODEL}")
         print(f"IDEAL HYPERPARAMETERS: {best_overall_params}")
-        print(f"Total Time for GridSearch: {total_grid_time_seconds / 60:.2f} minutes")
-        print(f"Total Time processing Best Params: {total_best_param_time_seconds / 60:.2f} minutes")
+        print(f"Total GridSearch Time: {total_grid_time_seconds / 60:.2f} minutes")
+        print(f"Time if we only ran Best Params: {total_best_param_time_seconds / 60:.2f} minutes")
         print("-" * 50)
 
         # File saving with timestamp to prevent overwrites
@@ -196,7 +245,7 @@ if __name__ == "__main__":
             f.write(f"Model: {SELECTED_MODEL}\n")
             f.write(f"Run Timestamp: {run_timestamp}\n")
             f.write(f"Total GridSearch Time: {total_grid_time_seconds / 60:.2f} minutes\n")
-            f.write(f"Total Optimized Param Time: {total_best_param_time_seconds / 60:.2f} minutes\n")
+            f.write(f"Time if Best Params used: {total_best_param_time_seconds / 60:.2f} minutes\n")
             f.write("-" * 40 + "\n")
             f.write(f"Best Hyperparameters: {best_overall_params}\n\n")
             f.write("All Parameter Average Ranks (Lowest = Best):\n")
