@@ -1,0 +1,15 @@
+Benchmark: OpenML-CC18
+Model: et
+Run Timestamp: 20260225_114656
+Total GridSearch Time: 69.24 minutes
+Time if Best Params used: 11.66 minutes
+----------------------------------------
+Best Hyperparameters: {'max_features': 0.5, 'min_samples_leaf': 1}
+
+All Parameter Average Ranks (Lowest = Best):
+{'max_features': 0.5, 'min_samples_leaf': 1}       2.591667
+{'max_features': 'sqrt', 'min_samples_leaf': 1}    3.133333
+{'max_features': 1.0, 'min_samples_leaf': 1}       3.183333
+{'max_features': 0.5, 'min_samples_leaf': 5}       3.675000
+{'max_features': 1.0, 'min_samples_leaf': 5}       3.816667
+{'max_features': 'sqrt', 'min_samples_leaf': 5}    4.600000
