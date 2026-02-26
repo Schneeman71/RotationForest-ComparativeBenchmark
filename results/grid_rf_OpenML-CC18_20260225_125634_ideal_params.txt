@@ -1,0 +1,15 @@
+Benchmark: OpenML-CC18
+Model: rf
+Run Timestamp: 20260225_125634
+Total GridSearch Time: 128.92 minutes
+Time if Best Params used: 9.88 minutes
+----------------------------------------
+Best Hyperparameters: {'max_features': 'sqrt', 'min_samples_leaf': 1}
+
+All Parameter Average Ranks (Lowest = Best):
+{'max_features': 'sqrt', 'min_samples_leaf': 1}    2.633333
+{'max_features': 0.5, 'min_samples_leaf': 1}       2.775000
+{'max_features': 0.5, 'min_samples_leaf': 5}       3.650000
+{'max_features': 'sqrt', 'min_samples_leaf': 5}    3.708333
+{'max_features': 1.0, 'min_samples_leaf': 1}       3.741667
+{'max_features': 1.0, 'min_samples_leaf': 5}       4.491667

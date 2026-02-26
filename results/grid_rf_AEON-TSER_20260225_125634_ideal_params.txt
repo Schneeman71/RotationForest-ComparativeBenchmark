@@ -1,0 +1,15 @@
+Benchmark: AEON-TSER
+Model: rf
+Run Timestamp: 20260225_125634
+Total GridSearch Time: 105.56 minutes
+Time if Best Params used: 2.30 minutes
+----------------------------------------
+Best Hyperparameters: {'max_features': 'sqrt', 'min_samples_leaf': 5}
+
+All Parameter Average Ranks (Lowest = Best):
+{'max_features': 'sqrt', 'min_samples_leaf': 5}    2.655172
+{'max_features': 'sqrt', 'min_samples_leaf': 1}    2.793103
+{'max_features': 0.5, 'min_samples_leaf': 5}       3.172414
+{'max_features': 0.5, 'min_samples_leaf': 1}       3.724138
+{'max_features': 1.0, 'min_samples_leaf': 5}       4.000000
+{'max_features': 1.0, 'min_samples_leaf': 1}       4.655172
