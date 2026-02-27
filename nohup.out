@@ -57411,3 +57411,308 @@ Time if we only ran Best Params: 2.30 minutes
 Saved AEON-TSER cleanly to results directory.
 
 All benchmarks finished successfully.
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 56 concurrent workers.
+Starting Multi-Benchmark GridSearch for Model: ROTF
+
+============================================================
+   PROCESSING BENCHMARK: OpenML-CC18
+============================================================
+Loaded OpenML-CC18: kr-vs-kp
+Loaded OpenML-CC18: letter
+Loaded OpenML-CC18: balance-scale
+Loaded OpenML-CC18: mfeat-factors
+Loaded OpenML-CC18: mfeat-fourier
+Loaded OpenML-CC18: breast-w
+Loaded OpenML-CC18: mfeat-karhunen
+Loaded OpenML-CC18: mfeat-morphological
+Loaded OpenML-CC18: mfeat-zernike
+Loaded OpenML-CC18: cmc
+Loaded OpenML-CC18: optdigits
+Loaded OpenML-CC18: credit-approval
+Loaded OpenML-CC18: credit-g
+Loaded OpenML-CC18: pendigits
+Loaded OpenML-CC18: diabetes
+Loaded OpenML-CC18: spambase
+Loaded OpenML-CC18: splice
+Loaded OpenML-CC18: tic-tac-toe
+Loaded OpenML-CC18: vehicle
+Loaded OpenML-CC18: electricity
+Loaded OpenML-CC18: satimage
+Loaded OpenML-CC18: eucalyptus
+Loaded OpenML-CC18: sick
+Loaded OpenML-CC18: vowel
+Loaded OpenML-CC18: isolet
+Loaded OpenML-CC18: analcatdata_authorship
+Loaded OpenML-CC18: analcatdata_dmft
+Loaded OpenML-CC18: mnist_784
+Loaded OpenML-CC18: pc4
+Loaded OpenML-CC18: pc3
+Loaded OpenML-CC18: jm1
+Loaded OpenML-CC18: kc2
+Loaded OpenML-CC18: kc1
+Loaded OpenML-CC18: pc1
+Loaded OpenML-CC18: adult
+Loaded OpenML-CC18: Bioresponse
+Loaded OpenML-CC18: wdbc
+Loaded OpenML-CC18: phoneme
+Loaded OpenML-CC18: qsar-biodeg
+Loaded OpenML-CC18: wall-robot-navigation
+Loaded OpenML-CC18: semeion
+Loaded OpenML-CC18: ilpd
+Loaded OpenML-CC18: madelon
+Loaded OpenML-CC18: nomao
+Loaded OpenML-CC18: ozone-level-8hr
+Loaded OpenML-CC18: cnae-9
+Loaded OpenML-CC18: first-order-theorem-proving
+Loaded OpenML-CC18: banknote-authentication
+Loaded OpenML-CC18: blood-transfusion-service-center
+Loaded OpenML-CC18: PhishingWebsites
+Loaded OpenML-CC18: cylinder-bands
+Loaded OpenML-CC18: bank-marketing
+Loaded OpenML-CC18: GesturePhaseSegmentationProcessed
+Loaded OpenML-CC18: har
+Loaded OpenML-CC18: dresses-sales
+Loaded OpenML-CC18: texture
+Loaded OpenML-CC18: connect-4
+Loaded OpenML-CC18: MiceProtein
+Loaded OpenML-CC18: steel-plates-fault
+Loaded OpenML-CC18: climate-model-simulation-crashes
+Loaded OpenML-CC18: wilt
+Loaded OpenML-CC18: car
+Loaded OpenML-CC18: segment
+Loaded OpenML-CC18: mfeat-pixel
+Loaded OpenML-CC18: Fashion-MNIST
+Loaded OpenML-CC18: jungle_chess_2pcs_raw_endgame_complete
+Loaded OpenML-CC18: numerai28.6
+Loaded OpenML-CC18: Devnagari-Script
+Loaded OpenML-CC18: CIFAR_10
+Loaded OpenML-CC18: Internet-Advertisements
+Loaded OpenML-CC18: dna
+Loaded OpenML-CC18: churn
+  -> Skipping isolet (Size: 4329489 > 1000000) to save runtime.
+  -> Skipping mnist_784 (Size: 49392000 > 1000000) to save runtime.
+  -> Skipping Bioresponse (Size: 5994000 > 1000000) to save runtime.
+  -> Skipping madelon (Size: 1170000 > 1000000) to save runtime.
+  -> Skipping nomao (Size: 3660124 > 1000000) to save runtime.
+  -> Skipping har (Size: 5199909 > 1000000) to save runtime.
+  -> Skipping connect-4 (Size: 2553642 > 1000000) to save runtime.
+  -> Skipping Fashion-MNIST (Size: 49392000 > 1000000) to save runtime.
+  -> Skipping numerai28.6 (Size: 1820448 > 1000000) to save runtime.
+  -> Skipping Devnagari-Script (Size: 84787200 > 1000000) to save runtime.
+  -> Skipping CIFAR_10 (Size: 165888000 > 1000000) to save runtime.
+  -> Skipping Internet-Advertisements (Size: 4597658 > 1000000) to save runtime.
+Selected 60 datasets after filtering.
+Executing GridSearch across 300 tasks...
+[Parallel(n_jobs=-1)]: Done   1 tasks      | elapsed:  2.3min
+[Parallel(n_jobs=-1)]: Done  16 tasks      | elapsed: 10.0min
+[Parallel(n_jobs=-1)]: Done  33 tasks      | elapsed: 16.3min
+[Parallel(n_jobs=-1)]: Done  50 tasks      | elapsed: 27.9min
+Traceback (most recent call last):
+  File "/yunity/kleinr1/RotationForest-ComparativeBenchmark/CrossVal.py", line 187, in <module>
+    results = Parallel(n_jobs=N_JOBS, verbose=10)(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/yunity/kleinr1/.local/lib/python3.12/site-packages/joblib/parallel.py", line 2072, in __call__
+    return output if self.return_generator else list(output)
+                                                ^^^^^^^^^^^^
+  File "/yunity/kleinr1/.local/lib/python3.12/site-packages/joblib/parallel.py", line 1682, in _get_outputs
+    yield from self._retrieve()
+  File "/yunity/kleinr1/.local/lib/python3.12/site-packages/joblib/parallel.py", line 1800, in _retrieve
+    time.sleep(0.01)
+KeyboardInterrupt
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 56 concurrent workers.
+Starting Multi-Benchmark GridSearch for Model: ROTF
+
+============================================================
+   PROCESSING BENCHMARK: OpenML-CC18
+============================================================
+Loaded OpenML-CC18: kr-vs-kp
+Loaded OpenML-CC18: letter
+Loaded OpenML-CC18: balance-scale
+Loaded OpenML-CC18: mfeat-factors
+Loaded OpenML-CC18: mfeat-fourier
+Loaded OpenML-CC18: breast-w
+Loaded OpenML-CC18: mfeat-karhunen
+Loaded OpenML-CC18: mfeat-morphological
+Loaded OpenML-CC18: mfeat-zernike
+Loaded OpenML-CC18: cmc
+Loaded OpenML-CC18: optdigits
+Loaded OpenML-CC18: credit-approval
+Loaded OpenML-CC18: credit-g
+Loaded OpenML-CC18: pendigits
+Loaded OpenML-CC18: diabetes
+Loaded OpenML-CC18: spambase
+Loaded OpenML-CC18: splice
+Loaded OpenML-CC18: tic-tac-toe
+Loaded OpenML-CC18: vehicle
+Loaded OpenML-CC18: electricity
+Loaded OpenML-CC18: satimage
+Loaded OpenML-CC18: eucalyptus
+Loaded OpenML-CC18: sick
+Loaded OpenML-CC18: vowel
+Loaded OpenML-CC18: isolet
+Loaded OpenML-CC18: analcatdata_authorship
+Loaded OpenML-CC18: analcatdata_dmft
+Loaded OpenML-CC18: mnist_784
+Loaded OpenML-CC18: pc4
+Loaded OpenML-CC18: pc3
+Loaded OpenML-CC18: jm1
+Loaded OpenML-CC18: kc2
+Loaded OpenML-CC18: kc1
+Loaded OpenML-CC18: pc1
+Loaded OpenML-CC18: adult
+Loaded OpenML-CC18: Bioresponse
+Loaded OpenML-CC18: wdbc
+Loaded OpenML-CC18: phoneme
+Loaded OpenML-CC18: qsar-biodeg
+Loaded OpenML-CC18: wall-robot-navigation
+Loaded OpenML-CC18: semeion
+Loaded OpenML-CC18: ilpd
+Loaded OpenML-CC18: madelon
+Loaded OpenML-CC18: nomao
+Loaded OpenML-CC18: ozone-level-8hr
+Loaded OpenML-CC18: cnae-9
+Loaded OpenML-CC18: first-order-theorem-proving
+Loaded OpenML-CC18: banknote-authentication
+Loaded OpenML-CC18: blood-transfusion-service-center
+Loaded OpenML-CC18: PhishingWebsites
+Loaded OpenML-CC18: cylinder-bands
+Loaded OpenML-CC18: bank-marketing
+Loaded OpenML-CC18: GesturePhaseSegmentationProcessed
+Loaded OpenML-CC18: har
+Loaded OpenML-CC18: dresses-sales
+Loaded OpenML-CC18: texture
+Loaded OpenML-CC18: connect-4
+Loaded OpenML-CC18: MiceProtein
+Loaded OpenML-CC18: steel-plates-fault
+Loaded OpenML-CC18: climate-model-simulation-crashes
+Loaded OpenML-CC18: wilt
+Loaded OpenML-CC18: car
+Loaded OpenML-CC18: segment
+Loaded OpenML-CC18: mfeat-pixel
+Loaded OpenML-CC18: Fashion-MNIST
+Loaded OpenML-CC18: jungle_chess_2pcs_raw_endgame_complete
+Loaded OpenML-CC18: numerai28.6
+Loaded OpenML-CC18: Devnagari-Script
+Loaded OpenML-CC18: CIFAR_10
+Loaded OpenML-CC18: Internet-Advertisements
+Loaded OpenML-CC18: dna
+Loaded OpenML-CC18: churn
+  -> Skipping isolet (Size: 4329489 > 1000000) to save runtime.
+  -> Skipping mnist_784 (Size: 49392000 > 1000000) to save runtime.
+  -> Skipping Bioresponse (Size: 5994000 > 1000000) to save runtime.
+  -> Skipping madelon (Size: 1170000 > 1000000) to save runtime.
+  -> Skipping nomao (Size: 3660124 > 1000000) to save runtime.
+  -> Skipping har (Size: 5199909 > 1000000) to save runtime.
+  -> Skipping connect-4 (Size: 2553642 > 1000000) to save runtime.
+  -> Skipping Fashion-MNIST (Size: 49392000 > 1000000) to save runtime.
+  -> Skipping numerai28.6 (Size: 1820448 > 1000000) to save runtime.
+  -> Skipping Devnagari-Script (Size: 84787200 > 1000000) to save runtime.
+  -> Skipping CIFAR_10 (Size: 165888000 > 1000000) to save runtime.
+  -> Skipping Internet-Advertisements (Size: 4597658 > 1000000) to save runtime.
+Selected 60 datasets after filtering.
+Executing GridSearch across 300 tasks...
+[Parallel(n_jobs=-1)]: Done   1 tasks      | elapsed:  2.3min
+[Parallel(n_jobs=-1)]: Done  16 tasks      | elapsed:  9.9min
+[Parallel(n_jobs=-1)]: Done  33 tasks      | elapsed: 16.3min
+[Parallel(n_jobs=-1)]: Done  50 tasks      | elapsed: 27.9min
+[Parallel(n_jobs=-1)]: Done  69 tasks      | elapsed: 90.2min
+[Parallel(n_jobs=-1)]: Done  88 tasks      | elapsed: 96.8min
+[Parallel(n_jobs=-1)]: Done 109 tasks      | elapsed: 114.7min
+[Parallel(n_jobs=-1)]: Done 130 tasks      | elapsed: 127.6min
+[Parallel(n_jobs=-1)]: Done 153 tasks      | elapsed: 145.4min
+[Parallel(n_jobs=-1)]: Done 176 tasks      | elapsed: 194.8min
+[Parallel(n_jobs=-1)]: Done 220 out of 300 | elapsed: 251.9min remaining: 91.6min
+[Parallel(n_jobs=-1)]: Done 251 out of 300 | elapsed: 331.7min remaining: 64.8min
+[Parallel(n_jobs=-1)]: Done 282 out of 300 | elapsed: 401.0min remaining: 25.6min
+[Parallel(n_jobs=-1)]: Done 300 out of 300 | elapsed: 551.7min finished
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 56 concurrent workers.
+--------------------------------------------------
+BENCHMARK COMPLETED: OpenML-CC18 | MODEL: rotf
+IDEAL HYPERPARAMETERS: {'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.5}
+Total GridSearch Time: 22397.85 minutes
+Time if we only ran Best Params: 1954.12 minutes
+--------------------------------------------------
+Saved OpenML-CC18 cleanly to results directory.
+
+
+============================================================
+   PROCESSING BENCHMARK: OpenML-297
+============================================================
+Loaded OpenML-297: cpu_act
+Loaded OpenML-297: pol
+Loaded OpenML-297: elevators
+Loaded OpenML-297: isolet
+Loaded OpenML-297: wine_quality
+Loaded OpenML-297: Ailerons
+Loaded OpenML-297: houses
+Loaded OpenML-297: house_16H
+Loaded OpenML-297: diamonds
+Loaded OpenML-297: Brazilian_houses
+Loaded OpenML-297: Bike_Sharing_Demand
+Loaded OpenML-297: nyc-taxi-green-dec-2016
+Loaded OpenML-297: house_sales
+Loaded OpenML-297: sulfur
+Loaded OpenML-297: medical_charges
+Loaded OpenML-297: MiamiHousing2016
+Loaded OpenML-297: superconduct
+Loaded OpenML-297: california
+Loaded OpenML-297: fifa
+Loaded OpenML-297: year
+  -> Skipping isolet (Size: 4301421 > 1000000) to save runtime.
+  -> Skipping nyc-taxi-green-dec-2016 (Size: 4712859 > 1000000) to save runtime.
+  -> Skipping superconduct (Size: 1511744 > 1000000) to save runtime.
+  -> Skipping year (Size: 41742900 > 1000000) to save runtime.
+Selected 16 datasets after filtering.
+Executing GridSearch across 80 tasks...
+[Parallel(n_jobs=-1)]: Done   5 out of  80 | elapsed: 40.2min remaining: 602.6min
+[Parallel(n_jobs=-1)]: Done  14 out of  80 | elapsed: 71.2min remaining: 335.6min
+[Parallel(n_jobs=-1)]: Done  23 out of  80 | elapsed: 96.5min remaining: 239.0min
+[Parallel(n_jobs=-1)]: Done  32 out of  80 | elapsed: 130.5min remaining: 195.7min
+[Parallel(n_jobs=-1)]: Done  41 out of  80 | elapsed: 161.7min remaining: 153.8min
+[Parallel(n_jobs=-1)]: Done  50 out of  80 | elapsed: 175.8min remaining: 105.5min
+[Parallel(n_jobs=-1)]: Done  59 out of  80 | elapsed: 198.6min remaining: 70.7min
+[Parallel(n_jobs=-1)]: Done  68 out of  80 | elapsed: 237.3min remaining: 41.9min
+[Parallel(n_jobs=-1)]: Done  77 out of  80 | elapsed: 455.5min remaining: 17.7min
+[Parallel(n_jobs=-1)]: Done  80 out of  80 | elapsed: 468.9min finished
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 56 concurrent workers.
+--------------------------------------------------
+BENCHMARK COMPLETED: OpenML-297 | MODEL: rotf
+IDEAL HYPERPARAMETERS: {'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.25}
+Total GridSearch Time: 11379.25 minutes
+Time if we only ran Best Params: 913.01 minutes
+--------------------------------------------------
+Saved OpenML-297 cleanly to results directory.
+
+
+============================================================
+   PROCESSING BENCHMARK: AEON-TSC
+============================================================
+  -> Skipping FordA (Size: 1800500 > 1000000) to save runtime.
+  -> Skipping FordB (Size: 1818000 > 1000000) to save runtime.
+  -> Skipping HandOutlines (Size: 2709000 > 1000000) to save runtime.
+  -> Skipping NonInvasiveFetalECGThorax1 (Size: 1350000 > 1000000) to save runtime.
+  -> Skipping NonInvasiveFetalECGThorax2 (Size: 1350000 > 1000000) to save runtime.
+  -> Skipping StarLightCurves (Size: 1024000 > 1000000) to save runtime.
+  -> Skipping DuckDuckGeese (Size: 18157500 > 1000000) to save runtime.
+  -> Skipping EigenWorms (Size: 13811712 > 1000000) to save runtime.
+  -> Skipping EthanolConcentration (Size: 1371033 > 1000000) to save runtime.
+  -> Skipping FaceDetection (Size: 52585920 > 1000000) to save runtime.
+  -> Skipping Heartbeat (Size: 5039820 > 1000000) to save runtime.
+  -> Skipping MotorImagery (Size: 53376000 > 1000000) to save runtime.
+  -> Skipping PEMS-SF (Size: 37025424 > 1000000) to save runtime.
+  -> Skipping PhonemeSpectra (Size: 7912905 > 1000000) to save runtime.
+  -> Skipping SelfRegulationSCP1 (Size: 1440768 > 1000000) to save runtime.
+  -> Skipping SelfRegulationSCP2 (Size: 1612800 > 1000000) to save runtime.
+Selected 122 datasets after filtering.
+Executing GridSearch across 610 tasks...
+[Parallel(n_jobs=-1)]: Done   1 tasks      | elapsed:  3.9min
+[Parallel(n_jobs=-1)]: Done  16 tasks      | elapsed: 28.0min
+[Parallel(n_jobs=-1)]: Done  33 tasks      | elapsed: 60.5min
+[Parallel(n_jobs=-1)]: Done  50 tasks      | elapsed: 71.3min
+[Parallel(n_jobs=-1)]: Done  69 tasks      | elapsed: 102.8min
+[Parallel(n_jobs=-1)]: Done  88 tasks      | elapsed: 129.6min
+[Parallel(n_jobs=-1)]: Done 109 tasks      | elapsed: 166.9min
+[Parallel(n_jobs=-1)]: Done 130 tasks      | elapsed: 198.2min
+[Parallel(n_jobs=-1)]: Done 153 tasks      | elapsed: 228.5min
+[Parallel(n_jobs=-1)]: Done 176 tasks      | elapsed: 280.2min
+[Parallel(n_jobs=-1)]: Done 201 tasks      | elapsed: 365.1min
