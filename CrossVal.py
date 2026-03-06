@@ -23,6 +23,7 @@ def get_param_grid(model_name):
     Defines the search space for tuning.
     Optimized to test specific hypotheses about Data Structure, Noise, and Redundancy.
     """
+    
     if model_name in ["rf", "et"]:
         return {
             # Tests Feature Visibility: "sqrt" (Standard) vs 0.5 (Aggressive) vs 1.0 (Bagging/Regression)
