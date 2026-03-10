@@ -3,101 +3,85 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import scikit_posthocs as sp
 
-# 1. Define paths and groupings
-DATA_DIR = os.path.join("results", "Benchtest1")
+COMPILED_FILE = "consolidated_best_scores.csv"
 
-# The benchmarks and models based on your file naming convention
-BENCHMARKS = ["openml-297", "openml-cc18"]
-MODELS = ["et", "rf", "rotf"]
+# ONLY process complete collections
+TARGET_BENCHMARKS = ["openml-297", "openml-cc18", "aeon-tsc", "aeon-tser"]
 
-def get_best_scores_per_dataset(filepath, is_minimization=False):
+def generate_cd_plot(benchmark, df_benchmark, task_type):
     """
-    Reads a model's benchmark csv file and extracts the best score.
-    If is_minimization=True (Regression/RMSE), it finds the MINIMUM.
-    If False (Classification/Accuracy), it finds the MAXIMUM.
+    Generates CD plot using the compiled dataset for a specific benchmark.
     """
-    df = pd.read_csv(filepath)
+    print(f"Processing Benchmark: {benchmark} ({task_type})...")
     
-    # Identify columns that are NOT scores
-    non_score_cols = ['dataset', 'seed', 'time_taken', 'status']
-    score_cols = [col for col in df.columns 
-                  if col not in non_score_cols and not str(col).startswith('time_')]
+    is_minimization = (task_type == 'regression')
     
-    df[score_cols] = df[score_cols].apply(pd.to_numeric, errors='coerce')
+    # Format the dataframe for the Friedman test
+    df_benchmark = df_benchmark.set_index('dataset')
     
-    # Average across seeds first
-    df_grouped = df.groupby('dataset')[score_cols].mean()
+    # Drop metadata columns to only leave models
+    models_df = df_benchmark.drop(columns=['benchmark', 'task_type'], errors='ignore')
     
-    # Adaptive selection: min for error metrics, max for accuracy metrics
-    if is_minimization:
-        best_scores = df_grouped.min(axis=1)
-    else:
-        best_scores = df_grouped.max(axis=1)
-        
-    best_scores.name = 'best_score'
-    return best_scores
+    # Drop models that have completely empty columns for this benchmark
+    models_df = models_df.dropna(axis=1, how='all')
+    
+    # Drop datasets (rows) that are missing values for ANY of the active models
+    models_df = models_df.dropna(axis=0, how='any')
 
-def generate_cd_plot(benchmark):
-    """
-    Gathers data and generates CD plot with adaptive ranking logic.
-    """
-    print(f"Processing Benchmark: {benchmark}...")
-    
-    # Determine if this benchmark uses error metrics (lower is better)
-    # openml-297 is regression (RMSE), openml-cc18 is classification (Accuracy)
-    is_minimization = True if "297" in benchmark else False
-    
-    model_scores = {}
-    
-    for model in MODELS:
-        filename = f"{model}-{benchmark}.csv"
-        filepath = os.path.join(DATA_DIR, filename)
-        
-        if not os.path.exists(filepath):
-            print(f"  Warning: File not found -> {filepath}")
-            continue
-            
-        # Pass the minimization flag to the score extractor
-        model_scores[model] = get_best_scores_per_dataset(filepath, is_minimization)
-
-    results_df = pd.DataFrame(model_scores).dropna()
-    
-    if results_df.empty:
-        print(f"  Error: No overlapping datasets found for {benchmark}. Skipping.\n")
+    if models_df.empty or models_df.shape[1] < 2:
+        print(f"  Error: Not enough overlapping model data for {benchmark}. Skipping.\\n")
         return
 
     # --- ADAPTIVE RANKING LOGIC ---
-    # If minimization (RMSE): ascending=True (lowest value gets rank 1)
-    # If maximization (Accuracy): ascending=False (highest value gets rank 1)
+    # Minimization (RMSE): ascending=True (lowest error gets rank 1)
+    # Maximization (Accuracy): ascending=False (highest accuracy gets rank 1)
     rank_ascending = True if is_minimization else False
-    ranks_df = results_df.rank(axis=1, ascending=rank_ascending)
+    ranks_df = models_df.rank(axis=1, ascending=rank_ascending)
     
     avg_ranks = ranks_df.mean()
     print(f"  Metric Type: {'Minimization (Lower is better)' if is_minimization else 'Maximization (Higher is better)'}")
-    print(f"  Average Ranks:\n{avg_ranks.to_string()}\n")
+    print(f"  Average Ranks:\\n{avg_ranks.to_string()}\\n")
 
     # Generate Plot
     plt.figure(figsize=(8, 3), dpi=150)
-    # Add metric type to title for clarity
     metric_label = "RMSE/MSE" if is_minimization else "ACC/F1"
     plt.title(f"CD Plot: {benchmark.upper()} ({metric_label})", pad=20)
     
-    # P-values: Nemenyi test
-    p_values = sp.posthoc_nemenyi_friedman(results_df)
-    p_values.columns = results_df.columns
-    p_values.index = results_df.columns
-    
-    sp.critical_difference_diagram(avg_ranks, p_values)
-    
-    output_filename = f"CD_plot_{benchmark}.png"
-    plt.savefig(output_filename, bbox_inches='tight')
-    plt.close()
-    print(f"  Saved plot as {output_filename}\n")
+    try:
+        # P-values: Nemenyi test
+        p_values = sp.posthoc_nemenyi_friedman(models_df)
+        p_values.columns = models_df.columns
+        p_values.index = models_df.columns
+        
+        sp.critical_difference_diagram(avg_ranks, p_values)
+        
+        output_filename = f"CD_plot_{benchmark}.png"
+        plt.savefig(output_filename, bbox_inches='tight')
+        print(f"  Saved plot as {output_filename}\\n")
+    except Exception as e:
+        print(f"  Error generating plot for {benchmark}: {e}\\n")
+    finally:
+        plt.close()
 
 if __name__ == "__main__":
-    if not os.path.exists(DATA_DIR):
-        print(f"Error: Directory '{DATA_DIR}' not found.")
+    if not os.path.exists(COMPILED_FILE):
+        print(f"Error: Compiled file '{COMPILED_FILE}' not found.")
+        print("Please run 'CompileBestScores.py' first.")
     else:
-        for benchmark in BENCHMARKS:
-            generate_cd_plot(benchmark)
-        print("All plots generated successfully!")
+        df = pd.read_csv(COMPILED_FILE)
+        
+        # Iterate only over our targeted complete collections
+        for benchmark in TARGET_BENCHMARKS:
+            if benchmark not in df['benchmark'].values:
+                print(f"Warning: Data for '{benchmark}' not found in the consolidated CSV.")
+                continue
+                
+            # Filter for this benchmark
+            df_bench = df[df['benchmark'] == benchmark].copy()
+            
+            # Extract task type (should be identical for all rows of a single benchmark)
+            task_type = df_bench['task_type'].iloc[0]
+            
+            generate_cd_plot(benchmark, df_bench, task_type)
+            
+        print("Targeted plots generated successfully!")
