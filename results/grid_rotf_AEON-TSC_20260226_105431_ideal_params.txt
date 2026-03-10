@@ -1,0 +1,21 @@
+Benchmark: AEON-TSC
+Model: rotf
+Run Timestamp: 20260226_105431
+Total GridSearch Time: 85199.47 minutes
+Time if Best Params used: 5964.34 minutes
+----------------------------------------
+Best Hyperparameters: {'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.5}
+
+All Parameter Average Ranks (Lowest = Best):
+{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.5}     5.405738
+{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.5}     5.413934
+{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.25}    5.483607
+{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.25}    5.508197
+{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.75}    5.885246
+{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.75}    5.893443
+{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.5}     7.336066
+{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.25}    7.364754
+{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.5}     7.372951
+{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.25}    7.385246
+{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.75}    7.450820
+{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.75}    7.500000

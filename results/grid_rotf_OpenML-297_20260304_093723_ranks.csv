@@ -1,0 +1,17 @@
+dataset,"{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.25}","{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.5}","{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.75}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.25}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.5}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.75}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.25}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.5}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.75}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.25}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.5}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.75}"
+Ailerons,7.5,9.5,11.5,7.5,9.5,11.5,3.5,5.5,1.5,3.5,5.5,1.5
+Bike_Sharing_Demand,7.5,9.5,11.5,7.5,9.5,11.5,3.5,1.5,5.5,3.5,1.5,5.5
+Brazilian_houses,1.5,3.5,5.5,1.5,3.5,5.5,7.5,9.5,11.5,7.5,9.5,11.5
+MiamiHousing2016,3.5,5.5,1.5,3.5,5.5,1.5,11.5,7.5,9.5,11.5,7.5,9.5
+california,1.5,3.5,5.5,1.5,3.5,5.5,7.5,9.5,11.5,7.5,9.5,11.5
+cpu_act,7.5,1.5,5.5,7.5,1.5,5.5,11.5,9.5,3.5,11.5,9.5,3.5
+diamonds,7.5,9.5,11.5,7.5,9.5,11.5,1.5,3.5,5.5,1.5,3.5,5.5
+elevators,7.5,11.5,9.5,7.5,11.5,9.5,5.5,1.5,3.5,5.5,1.5,3.5
+fifa,1.5,3.5,5.5,1.5,3.5,5.5,7.5,9.5,11.5,7.5,9.5,11.5
+house_16H,5.5,3.5,1.5,5.5,3.5,1.5,7.5,9.5,11.5,7.5,9.5,11.5
+house_sales,1.5,3.5,5.5,1.5,3.5,5.5,9.5,7.5,11.5,9.5,7.5,11.5
+houses,1.5,3.5,5.5,1.5,3.5,5.5,7.5,11.5,9.5,7.5,11.5,9.5
+medical_charges,7.5,9.5,11.5,7.5,9.5,11.5,1.5,3.5,5.5,1.5,3.5,5.5
+pol,1.5,5.5,3.5,1.5,5.5,3.5,7.5,9.5,11.5,7.5,9.5,11.5
+sulfur,7.5,9.5,11.5,7.5,9.5,11.5,1.5,3.5,5.5,1.5,3.5,5.5
+wine_quality,5.5,3.5,11.5,5.5,3.5,11.5,1.5,7.5,9.5,1.5,7.5,9.5
