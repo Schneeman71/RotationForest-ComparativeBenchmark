@@ -66,7 +66,8 @@ def process_benchmark_grid(ds, model_name, seed):
         search.fit(X_train_orig, y_train)
 
         cv_results = search.cv_results_
-        record = {"dataset": ds["name"], "seed": seed, "time_taken": round(time.time() - t_start, 4), "status": "success"}
+        # Added model_name to the record for better CSV tracking
+        record = {"dataset": ds["name"], "model": model_name, "seed": seed, "time_taken": round(time.time() - t_start, 4), "status": "success"}
         
         for i, params in enumerate(cv_results["params"]):
             param_str = str(params).replace("model__", "") 
@@ -76,16 +77,19 @@ def process_benchmark_grid(ds, model_name, seed):
         return record
 
     except Exception as e:
-        return {"dataset": ds.get("name"), "seed": seed, "status": "failed", "error": str(e)}
+        return {"dataset": ds.get("name"), "model": model_name, "seed": seed, "status": "failed", "error": str(e)}
 
 if __name__ == "__main__":
-    SELECTED_MODEL = "rotf"  
+    # Define multiple models here
+    SELECTED_MODELS = ["et", "rf", "rotf"] 
     BENCHMARKS = ["AEON-TSC", "AEON-TSER"] 
     run_timestamp = time.strftime("%Y%m%d_%H%M%S")
     os.makedirs("results", exist_ok=True)
-    
+
     for benchmark in BENCHMARKS:
-        print(f"\nProcessing Benchmark: {benchmark} (Max Cells: {MAX_CELLS_PER_DATASET:,})")
+        print(f"\n==================================================")
+        print(f"Processing Benchmark: {benchmark} (Max Cells: {MAX_CELLS_PER_DATASET:,})")
+        print(f"==================================================")
         
         # 1. Load Datasets using updated, metadata-filtered loaders
         if benchmark == "OpenML-CC18":
@@ -93,33 +97,43 @@ if __name__ == "__main__":
         elif benchmark == "OpenML-297":
             datasets = load_openml_suite(297, "regression", "OpenML-297")
         elif benchmark == "AEON-TSC":
-            datasets = load_aeon_suite("TSC") # Simplified helper
+            datasets = load_aeon_suite("TSC")
         elif benchmark == "AEON-TSER":
             datasets = load_aeon_suite("TSER")
+        else:
+            datasets = []
 
-        if not datasets: continue
+        if not datasets: 
+            print(f"No datasets loaded for {benchmark}. Skipping...")
+            continue
             
-        # 2. Parallel Task Execution
-        # Uses the randomly generated seeds from PreliminaryTesting.py
-        tasks = [(ds, SELECTED_MODEL, s) for ds in datasets for s in SEEDS]
-        
-        print(f"Executing {len(tasks)} tasks in parallel...")
-        results = Parallel(n_jobs=N_JOBS, verbose=10)(delayed(process_benchmark_grid)(*t) for t in tasks)
+        # Iterate through each model for the current benchmark
+        for model_name in SELECTED_MODELS:
+            print(f"\n---> Evaluating Model: {model_name.upper()} on {benchmark}")
+            
+            # 2. Parallel Task Execution
+            # Build task list strictly for THIS model so dataframe columns align perfectly later
+            tasks = [(ds, model_name, s) for ds in datasets for s in SEEDS]
+            
+            print(f"Executing {len(tasks)} tasks in parallel...")
+            results = Parallel(n_jobs=N_JOBS, verbose=10)(delayed(process_benchmark_grid)(*t) for t in tasks)
 
-        # 3. Process & Save Results
-        success_results = [r for r in results if r["status"] == "success"]
-        if not success_results: continue
+            # 3. Process & Save Results
+            success_results = [r for r in results if r["status"] == "success"]
+            if not success_results: 
+                print(f"All tasks failed for {model_name} on {benchmark}.")
+                continue
 
-        df_results = pd.DataFrame(success_results)
-        param_cols = [c for c in df_results.columns if c.startswith("{") and not c.startswith("time_")]
-        
-        # Summary & Ranking
-        df_mean_seeds = df_results.groupby("dataset")[param_cols].mean()
-        is_regression = "TSER" in benchmark or "297" in benchmark
-        df_ranks = df_mean_seeds.rank(axis=1, ascending=is_regression)
-        mean_ranks = df_ranks.mean().sort_values()
-        
-        # Save output
-        file_prefix = f"grid_{SELECTED_MODEL}_{benchmark}_{run_timestamp}"
-        df_results.to_csv(f"results/{file_prefix}_raw.csv", index=False)
-        print(f"Best Params for {benchmark}: {mean_ranks.index[0]}")
+            df_results = pd.DataFrame(success_results)
+            param_cols = [c for c in df_results.columns if c.startswith("{") and not c.startswith("time_")]
+            
+            # Summary & Ranking (Calculated per model so grid search spaces don't clash)
+            df_mean_seeds = df_results.groupby("dataset")[param_cols].mean()
+            is_regression = "TSER" in benchmark or "297" in benchmark
+            df_ranks = df_mean_seeds.rank(axis=1, ascending=is_regression)
+            mean_ranks = df_ranks.mean().sort_values()
+            
+            # Save output - file name now includes the specific model being run
+            file_prefix = f"grid_{model_name}_{benchmark}_{run_timestamp}"
+            df_results.to_csv(f"results/{file_prefix}_raw.csv", index=False)
+            print(f"Best Params for {model_name.upper()} on {benchmark}: {mean_ranks.index[0]}")
