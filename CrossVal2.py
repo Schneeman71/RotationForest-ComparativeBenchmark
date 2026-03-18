@@ -81,7 +81,7 @@ def process_benchmark_grid(ds, model_name, seed):
 
 if __name__ == "__main__":
     # Define multiple models here
-    SELECTED_MODELS = ["et", "rf", "rotf"] 
+    SELECTED_MODELS = ["et", "rf"] #rotf 
     BENCHMARKS = ["AEON-TSC", "AEON-TSER"] 
     run_timestamp = time.strftime("%Y%m%d_%H%M%S")
     os.makedirs("results", exist_ok=True)
