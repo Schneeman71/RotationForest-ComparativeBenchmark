@@ -7,7 +7,7 @@ from sklearn.model_selection import GridSearchCV, KFold, StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
 
 from PreliminaryTesting import (
-    load_openml_suite, load_aeon_suite,
+    load_openml_suite, load_aeon_tsc_suite, load_aeon_tser_suite
     ensure_numeric_format, make_smart_preprocessor, make_model,
     SEEDS, N_JOBS, MAX_CELLS_PER_DATASET
 )
