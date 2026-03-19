@@ -121,7 +121,7 @@ def process_benchmark_grid(ds, model_name, seed):
 
 if __name__ == "__main__":
     # === CONFIGURATION BLOCK ===
-    SELECTED_MODELS = ["rotf", "rf"]  # Add/remove models here! e.g. ["rf", "et", "rotf"]
+    SELECTED_MODELS = ["et"]  # Add/remove models here! e.g. ["rf", "et", "rotf"]
     BENCHMARKS = ["AEON-TSC", "AEON-TSER"] # "OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER"
     # ===========================
     
