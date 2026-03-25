@@ -1,0 +1,19 @@
+dataset,"{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.25}","{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.5}","{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.75}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.25}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.5}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.75}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.25}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.5}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.75}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.25}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.5}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.75}"
+Ailerons,11.0,9.0,12.0,5.0,4.0,6.0,7.0,8.0,10.0,2.0,1.0,3.0
+Bike_Sharing_Demand,7.0,11.0,12.0,4.0,5.0,6.0,8.0,9.0,10.0,2.0,1.0,3.0
+Brazilian_houses,4.0,5.0,6.0,1.0,2.0,3.0,9.0,11.0,12.0,7.0,8.0,10.0
+MiamiHousing2016,8.0,7.0,9.0,1.0,2.0,3.0,12.0,10.0,11.0,6.0,4.0,5.0
+california,8.0,7.0,9.0,1.0,2.0,3.0,10.0,11.0,12.0,4.0,5.0,6.0
+cpu_act,7.0,11.0,12.0,4.0,5.0,6.0,8.0,9.0,10.0,1.0,3.0,2.0
+diamonds,10.0,11.0,12.0,4.0,5.0,6.0,8.0,7.0,9.0,2.0,1.0,3.0
+elevators,10.0,12.0,11.0,7.0,9.0,8.0,4.0,5.0,6.0,2.0,3.0,1.0
+fifa,6.0,5.0,4.0,2.0,1.0,3.0,10.0,11.0,12.0,7.0,8.0,9.0
+house_16H,8.0,6.0,4.0,3.0,2.0,1.0,10.0,11.0,12.0,9.0,5.0,7.0
+house_sales,9.0,8.0,7.0,2.0,3.0,1.0,12.0,11.0,10.0,6.0,5.0,4.0
+houses,5.0,4.0,8.0,2.0,1.0,3.0,12.0,11.0,10.0,9.0,6.0,7.0
+isolet,9.0,12.0,11.0,4.0,5.0,6.0,7.0,8.0,10.0,3.0,1.0,2.0
+medical_charges,8.0,10.0,12.0,7.0,9.0,11.0,4.0,5.0,6.0,1.0,2.0,3.0
+pol,4.0,6.0,5.0,1.0,3.0,2.0,10.0,11.0,12.0,8.0,7.0,9.0
+sulfur,11.0,8.0,12.0,5.0,3.0,9.0,7.0,6.0,10.0,1.0,2.0,4.0
+superconduct,8.0,7.0,9.0,1.0,2.0,3.0,11.0,10.0,12.0,5.0,4.0,6.0
+wine_quality,7.0,8.0,12.0,3.0,6.0,4.0,11.0,10.0,9.0,5.0,1.0,2.0
