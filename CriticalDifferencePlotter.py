@@ -12,15 +12,19 @@ def generate_cd_plot(benchmark, df_benchmark, task_type):
     """
     Generates CD plot using the compiled dataset for a specific benchmark.
     """
-    print(f"Processing Benchmark: {benchmark} ({task_type})...")
+    print(f"\nProcessing Benchmark: {benchmark} ({task_type})...")
     
     is_minimization = (task_type == 'regression')
     
-    # Format the dataframe for the Friedman test
-    df_benchmark = df_benchmark.set_index('dataset')
+    # --- FIX: Only extract the '_mean' columns for the statistical ranking ---
+    # We ignore the '_std' columns here because CD plots only rank the primary metric
+    mean_cols = [c for c in df_benchmark.columns if c.endswith('_mean')]
     
-    # Drop metadata columns to only leave models
-    models_df = df_benchmark.drop(columns=['benchmark', 'task_type'], errors='ignore')
+    # Set index and filter to only our mean score columns
+    models_df = df_benchmark.set_index('dataset')[mean_cols]
+    
+    # Rename columns to remove '_mean' for cleaner plot labels (e.g., 'rf_mean' -> 'RF')
+    models_df.columns = [c.replace('_mean', '').upper() for c in models_df.columns]
     
     # Drop models that have completely empty columns for this benchmark
     models_df = models_df.dropna(axis=1, how='all')
@@ -29,7 +33,7 @@ def generate_cd_plot(benchmark, df_benchmark, task_type):
     models_df = models_df.dropna(axis=0, how='any')
 
     if models_df.empty or models_df.shape[1] < 2:
-        print(f"  Error: Not enough overlapping model data for {benchmark}. Skipping.\\n")
+        print(f"  Error: Not enough overlapping model data for {benchmark}. Skipping.")
         return
 
     # --- ADAPTIVE RANKING LOGIC ---
@@ -40,7 +44,7 @@ def generate_cd_plot(benchmark, df_benchmark, task_type):
     
     avg_ranks = ranks_df.mean()
     print(f"  Metric Type: {'Minimization (Lower is better)' if is_minimization else 'Maximization (Higher is better)'}")
-    print(f"  Average Ranks:\\n{avg_ranks.to_string()}\\n")
+    print(f"  Average Ranks:\n{avg_ranks.to_string()}\n")
 
     # Generate Plot
     plt.figure(figsize=(8, 3), dpi=150)
@@ -50,16 +54,15 @@ def generate_cd_plot(benchmark, df_benchmark, task_type):
     try:
         # P-values: Nemenyi test
         p_values = sp.posthoc_nemenyi_friedman(models_df)
-        p_values.columns = models_df.columns
-        p_values.index = models_df.columns
         
+        # Create the diagram
         sp.critical_difference_diagram(avg_ranks, p_values)
         
         output_filename = f"CD_plot_{benchmark}.png"
         plt.savefig(output_filename, bbox_inches='tight')
-        print(f"  Saved plot as {output_filename}\\n")
+        print(f"  Saved plot as {output_filename}")
     except Exception as e:
-        print(f"  Error generating plot for {benchmark}: {e}\\n")
+        print(f"  Error generating plot for {benchmark}: {e}")
     finally:
         plt.close()
 
@@ -84,4 +87,4 @@ if __name__ == "__main__":
             
             generate_cd_plot(benchmark, df_bench, task_type)
             
-        print("Targeted plots generated successfully!")
+        print("\nTargeted plots generated successfully!")

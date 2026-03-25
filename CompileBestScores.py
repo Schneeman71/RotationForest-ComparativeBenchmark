@@ -46,22 +46,32 @@ def compile_best_scores():
         # Coerce any string errors to numeric
         df[score_cols] = df[score_cols].apply(pd.to_numeric, errors='coerce')
         
-        # Average across the 5 seeds for each dataset
-        df_grouped = df.groupby('dataset')[score_cols].mean()
+        # Calculate BOTH mean and standard deviation across the 5 seeds for each dataset
+        df_mean = df.groupby('dataset')[score_cols].mean()
+        df_std = df.groupby('dataset')[score_cols].std()
         
         # Determine task type to know whether we want the highest or lowest score
         is_minimization = 'tser' in benchmark or '297' in benchmark or 'regression' in benchmark
         task_type = 'regression' if is_minimization else 'classification'
         
-        # Select the best hyperparameter per dataset
+        # Select the best hyperparameter COLUMN per dataset
         if is_minimization:
-            best_scores = df_grouped.min(axis=1) # lowest MSE/RMSE
+            best_param_cols = df_mean.idxmin(axis=1) # col name with lowest MSE/RMSE
         else:
-            best_scores = df_grouped.max(axis=1) # highest Accuracy/F1
+            best_param_cols = df_mean.idxmax(axis=1) # col name with highest Accuracy/F1
+            
+        # Extract the mean and std specifically for that ideal hyperparameter
+        best_records = []
+        for dataset in df_mean.index:
+            best_col = best_param_cols[dataset]
+            best_records.append({
+                'dataset': dataset,
+                f'{model}_mean': df_mean.loc[dataset, best_col],
+                f'{model}_std': df_std.loc[dataset, best_col]
+            })
             
         # Convert to DataFrame
-        res_df = best_scores.reset_index()
-        res_df.columns = ['dataset', model]
+        res_df = pd.DataFrame(best_records)
         res_df['benchmark'] = benchmark
         res_df['task_type'] = task_type
         
@@ -89,13 +99,17 @@ def compile_best_scores():
         final_dfs_to_merge
     )
     
-    # Reorder columns: dataset, benchmark, task_type, model1, model2...
+    # Reorder columns: dataset, benchmark, task_type, model1_mean, model1_std, model2_mean...
     base_cols = ['dataset', 'benchmark', 'task_type']
     model_cols = [c for c in consolidated_df.columns if c not in base_cols]
+    
+    # Sort model columns so that _mean and _std for the same model are next to each other
+    model_cols.sort()
+    
     consolidated_df = consolidated_df[base_cols + model_cols]
     
     consolidated_df.to_csv(output_file, index=False)
-    print(f"Successfully saved compiled scores to {output_file}!")
+    print(f"Successfully saved compiled scores with standard deviations to {output_file}!")
     print(consolidated_df.head())
 
 if __name__ == '__main__':
