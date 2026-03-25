@@ -149,6 +149,7 @@ def make_model(model_name, task, preprocessor, seed):
     from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor, ExtraTreesClassifier, ExtraTreesRegressor
     from aeon.classification.sklearn import RotationForestClassifier
     from aeon.regression.sklearn import RotationForestRegressor
+    from sktree import ObliqueRandomForestClassifier, ObliqueRandomForestRegressor
 
     # Models use the iterative 'seed' passed from the SEEDS list
     if model_name == "rf":
@@ -159,6 +160,9 @@ def make_model(model_name, task, preprocessor, seed):
         model = est(n_estimators=50, n_jobs=1, random_state=seed)
     elif model_name == "rotf":
         est = RotationForestClassifier if task == "classification" else RotationForestRegressor
+        model = est(n_estimators=25, n_jobs=1, random_state=seed)
+    elif model_name == "obliquert":
+        est = ObliqueRandomForestClassifier if task == "classification" else ObliqueRandomForestRegressor
         model = est(n_estimators=25, n_jobs=1, random_state=seed)
     
     from sklearn.pipeline import Pipeline

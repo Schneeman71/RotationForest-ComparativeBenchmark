@@ -5,7 +5,7 @@ import numpy as np
 from joblib import Parallel, delayed
 from sklearn.model_selection import GridSearchCV, KFold, StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
-
+from sktree import ObliqueRandomForestClassifier, ObliqueRandomForestRegressor
 # Import utilities from your optimized testing file
 from PreliminaryTestingOpt import (
     load_openml_suite, load_aeon_suite,
@@ -35,6 +35,13 @@ def get_param_grid(model_name):
             "model__max_group": [3, 7],
             # 0.25 -> 0.75: Checks Robustness to Redundancy
             "model__remove_proportion": [0.25, 0.5, 0.75]
+        }
+    elif model_name == "obliquert":
+        return {
+            # Tests Feature Visibility: "sqrt" (Standard) vs 0.5 (Aggressive) vs 1.0 (Bagging/Regression)
+            "model__max_features": ["sqrt", 1.0],
+            # Tests Smoothing: 1 (High Variance) vs 5 (Smoothed/Noisy Data)
+            "model__feature_combinations": [1.5, 2]
         }
     return {}
 
@@ -121,8 +128,8 @@ def process_benchmark_grid(ds, model_name, seed):
 
 if __name__ == "__main__":
     # === CONFIGURATION BLOCK ===
-    SELECTED_MODELS = ["rotf", "rf", "et"]  # Add/remove models here! e.g. ["rf", "et", "rotf"]
-    BENCHMARKS = ["OpenML-CC18", "OpenML-297"] # "OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER"
+    SELECTED_MODELS = ["obliquert"]  # Add/remove models here! e.g. ["rf", "et", "rotf", "obliquert"]
+    BENCHMARKS = ["OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER"] # "OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER", OpenML-334, OpenML-335, OpenML-336
     # ===========================
     
     # Generate a master timestamp for this entire run batch
@@ -143,10 +150,17 @@ if __name__ == "__main__":
             datasets += load_openml_suite(99, "classification", "OpenML-CC18", limit=DATASET_LIMIT)
         elif benchmark == "OpenML-297":
             datasets += load_openml_suite(297, "regression", "OpenML-297", limit=DATASET_LIMIT)
+        elif benchmark == "OpenML-334":
+            datasets += load_openml_suite(334, "classification", "OpenML-334", limit=DATASET_LIMIT)
+        elif benchmark == "OpenML-335":
+            datasets += load_openml_suite(335, "classification", "OpenML-335", limit=DATASET_LIMIT)
+        elif benchmark == "OpenML-336":
+            datasets += load_openml_suite(336, "regression", "OpenML-336", limit=DATASET_LIMIT)
         elif benchmark == "AEON-TSC":
             datasets += load_aeon_suite("TSC", limit=DATASET_LIMIT)
         elif benchmark == "AEON-TSER":
             datasets += load_aeon_suite("TSER", limit=DATASET_LIMIT)
+
 
         if not datasets:
             print(f"Warning: No valid datasets loaded for {benchmark}. Skipping...")
