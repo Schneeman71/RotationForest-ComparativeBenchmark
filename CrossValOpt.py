@@ -41,7 +41,7 @@ def get_param_grid(model_name):
             # Tests Feature Visibility: "sqrt" (Standard) vs 0.5 (Aggressive) vs 1.0 (Bagging/Regression)
             "model__max_features": ["sqrt", 1.0],
             # Tests Smoothing: 1 (High Variance) vs 5 (Smoothed/Noisy Data)
-            "model__feature_combinations": [1, 5]
+            "model__min_samples_leaf": [1, 5]
         }
     return {}
 
