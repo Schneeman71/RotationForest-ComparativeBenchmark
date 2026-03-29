@@ -5,7 +5,7 @@ import numpy as np
 from joblib import Parallel, delayed
 from sklearn.model_selection import GridSearchCV, KFold, StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
-from sktree import ObliqueRandomForestClassifier, ObliqueRandomForestRegressor
+# from sktree import ObliqueRandomForestClassifier, ObliqueRandomForestRegressor
 # Import utilities from your optimized testing file
 from PreliminaryTestingOpt import (
     load_openml_suite, load_aeon_suite,
@@ -185,6 +185,7 @@ if __name__ == "__main__":
             
             if failed_results:
                 print(f"Warning: {len(failed_results)} tasks failed for {model_name.upper()}.")
+
                 print(f"Sample Error: {failed_results[0]['error']}")
 
             df_results = pd.DataFrame(success_results)
