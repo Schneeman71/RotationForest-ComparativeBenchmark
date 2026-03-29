@@ -153,7 +153,7 @@ if __name__ == "__main__":
         elif benchmark == "OpenML-334":
             datasets += load_openml_suite(334, "classification", "OpenML-334", limit=DATASET_LIMIT)
         elif benchmark == "OpenML-335":
-            datasets += load_openml_suite(335, "classification", "OpenML-335", limit=DATASET_LIMIT)
+            datasets += load_openml_suite(335, "regression", "OpenML-335", limit=DATASET_LIMIT)
         elif benchmark == "OpenML-336":
             datasets += load_openml_suite(336, "regression", "OpenML-336", limit=DATASET_LIMIT)
         elif benchmark == "AEON-TSC":
@@ -185,6 +185,7 @@ if __name__ == "__main__":
             
             if failed_results:
                 print(f"Warning: {len(failed_results)} tasks failed for {model_name.upper()}.")
+                print(f"Sample Error: {failed_results[0]['error']}")
 
             df_results = pd.DataFrame(success_results)
             
