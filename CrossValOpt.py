@@ -36,13 +36,6 @@ def get_param_grid(model_name):
             # 0.25 -> 0.75: Checks Robustness to Redundancy
             "model__remove_proportion": [0.25, 0.5, 0.75]
         }
-    elif model_name == "obliquert":
-        return {
-            # Tests Feature Visibility: "sqrt" (Standard) vs 0.5 (Aggressive) vs 1.0 (Bagging/Regression)
-            "model__max_features": ["sqrt", 1.0],
-            # Tests Smoothing: 1 (High Variance) vs 5 (Smoothed/Noisy Data)
-            "model__min_samples_leaf": [1, 5]
-        }
     return {}
 
 # --- Worker Function ---
