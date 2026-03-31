@@ -114,7 +114,7 @@ if __name__ == "__main__":
     # === CONFIGURATION BLOCK ===
     # Isolated purely to Oblique Random Forest
     SELECTED_MODELS = ["obliquert"]  
-    BENCHMARKS = ["OpenML-334", "OpenML-335", "OpenML-336"] # "OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER", OpenML-334, OpenML-335, OpenML-336
+    BENCHMARKS = ["OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER", "OpenML-334", "OpenML-335", "OpenML-336"] # "OpenML-CC18", "OpenML-297", "AEON-TSC", "AEON-TSER", OpenML-334, OpenML-335, OpenML-336
     # ===========================
     
     # Generate a master timestamp for this entire run batch
