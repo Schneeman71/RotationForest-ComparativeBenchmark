@@ -7,7 +7,7 @@ from sklearn.model_selection import GridSearchCV, KFold, StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
 
 # Import utilities from your isolated Oblique testing file
-from PreliminaryTestingOpt_Oblique import (
+from PreliminaryTestingOpt_oblique import (
     load_openml_suite, load_aeon_suite,
     ensure_numeric_format, make_smart_preprocessor, make_model,
     SEEDS, DATASET_LIMIT, N_JOBS, MAX_CELLS_PER_DATASET
