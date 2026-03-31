@@ -1,0 +1,14 @@
+dataset,"{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.25}","{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.5}","{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.75}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.25}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.5}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.75}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.25}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.5}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.75}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.25}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.5}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.75}"
+Bike_Sharing_Demand,7.0,8.0,9.0,1.0,3.0,2.0,10.0,11.0,12.0,4.0,5.0,6.0
+Brazilian_houses,4.0,6.0,5.0,2.0,3.0,1.0,10.0,11.0,12.0,7.0,8.0,9.0
+Mercedes_Benz_Greener_Manufacturing,12.0,11.0,7.0,8.0,5.0,4.0,9.0,6.0,10.0,3.0,1.0,2.0
+SGEMM_GPU_kernel_performance,9.0,8.0,7.0,2.0,3.0,1.0,12.0,11.0,10.0,6.0,5.0,4.0
+abalone,11.0,10.0,12.0,5.0,4.0,6.0,8.0,7.0,9.0,1.0,2.0,3.0
+analcatdata_supreme,9.0,12.0,11.0,7.0,8.0,10.0,1.0,5.0,6.0,2.0,3.0,4.0
+diamonds,7.0,9.0,8.0,4.0,6.0,5.0,10.0,12.0,11.0,1.0,2.0,3.0
+house_sales,9.0,7.0,8.0,3.0,1.0,2.0,11.0,12.0,10.0,6.0,5.0,4.0
+medical_charges,8.0,10.0,12.0,7.0,9.0,11.0,4.0,5.0,6.0,1.0,2.0,3.0
+particulate-matter-ukair-2017,11.0,10.0,12.0,6.0,4.0,5.0,8.0,7.0,9.0,2.0,1.0,3.0
+seattlecrime6,7.0,9.0,12.0,6.0,10.0,11.0,1.0,8.0,4.0,3.0,5.0,2.0
+topo_2_1,12.0,8.0,10.0,4.0,5.0,6.0,9.0,7.0,11.0,3.0,1.0,2.0
+visualizing_soil,6.0,5.0,4.0,3.0,2.0,1.0,10.0,11.0,12.0,7.0,8.0,9.0

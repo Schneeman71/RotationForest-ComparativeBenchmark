@@ -1,0 +1,7 @@
+dataset,"{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.25}","{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.5}","{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.75}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.25}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.5}","{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.75}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.25}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.5}","{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.75}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.25}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.5}","{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.75}"
+albert,12.0,11.0,10.0,6.0,5.0,4.0,9.0,8.0,7.0,3.0,1.0,2.0
+compas-two-years,9.0,10.0,5.5,5.5,2.0,3.0,11.0,12.0,7.0,8.0,1.0,4.0
+default-of-credit-card-clients,9.0,11.0,12.0,5.0,4.0,6.0,8.0,7.0,10.0,2.0,3.0,1.0
+electricity,5.0,6.0,4.0,2.0,3.0,1.0,10.0,11.0,12.0,7.0,8.0,9.0
+eye_movements,7.0,9.0,8.0,2.0,1.0,6.0,12.0,11.0,10.0,4.0,5.0,3.0
+road-safety,11.0,10.0,12.0,4.0,5.0,6.0,9.0,7.0,8.0,3.0,1.0,2.0

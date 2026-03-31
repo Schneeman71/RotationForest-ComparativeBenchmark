@@ -1,0 +1,21 @@
+Benchmark: OpenML-336
+Model: ROTF
+Run Timestamp: 20260328_224728
+Total GridSearch Time: 1192.71 minutes
+Time if Best Params used: 132.71 minutes
+----------------------------------------
+Best Hyperparameters: {'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.25}
+
+All Parameter Average Ranks (Lowest = Best):
+{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.25}     3.529412
+{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.5}      3.529412
+{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.25}     3.823529
+{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.5}      4.058824
+{'max_group': 3, 'n_estimators': 50, 'remove_proportion': 0.75}     4.647059
+{'max_group': 7, 'n_estimators': 50, 'remove_proportion': 0.75}     4.764706
+{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.25}     8.176471
+{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.5}      8.294118
+{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.5}      8.352941
+{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.25}     8.823529
+{'max_group': 3, 'n_estimators': 20, 'remove_proportion': 0.75}     9.705882
+{'max_group': 7, 'n_estimators': 20, 'remove_proportion': 0.75}    10.294118

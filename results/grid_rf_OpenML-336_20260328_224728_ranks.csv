@@ -1,0 +1,18 @@
+dataset,"{'max_features': 'sqrt', 'min_samples_leaf': 1}","{'max_features': 'sqrt', 'min_samples_leaf': 5}","{'max_features': 0.5, 'min_samples_leaf': 1}","{'max_features': 0.5, 'min_samples_leaf': 5}","{'max_features': 1.0, 'min_samples_leaf': 1}","{'max_features': 1.0, 'min_samples_leaf': 5}"
+Ailerons,5.0,6.0,3.0,4.0,1.0,2.0
+Bike_Sharing_Demand,4.0,5.0,3.0,1.0,6.0,2.0
+Brazilian_houses,3.0,6.0,2.0,5.0,1.0,4.0
+MiamiHousing2016,1.0,5.0,2.0,4.0,3.0,6.0
+abalone,5.0,2.0,4.0,1.0,6.0,3.0
+cpu_act,5.0,6.0,1.0,3.0,2.0,4.0
+diamonds,4.0,1.0,5.0,2.0,6.0,3.0
+elevators,5.0,6.0,2.0,4.0,1.0,3.0
+house_16H,4.0,6.0,1.0,3.0,2.0,5.0
+house_sales,5.0,6.0,1.0,4.0,3.0,2.0
+houses,5.0,6.0,3.0,4.0,1.0,2.0
+medical_charges,4.5,2.5,4.5,2.5,6.0,1.0
+pol,5.0,6.0,1.0,4.0,2.0,3.0
+sulfur,2.0,6.0,1.0,5.0,3.0,4.0
+superconduct,2.0,6.0,1.0,4.0,3.0,5.0
+wine_quality,1.0,6.0,2.0,4.0,3.0,5.0
+yprop_4_1,4.0,1.0,5.0,2.0,6.0,3.0
