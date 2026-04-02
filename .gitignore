@@ -1,1 +1,6 @@
 nohup.out
+oblique_env/
+venv/
+env/
+__pycache__/
+*.pyc
