@@ -1,0 +1,7 @@
+dataset,"{'max_features': 'sqrt', 'min_samples_leaf': 1}","{'max_features': 'sqrt', 'min_samples_leaf': 5}","{'max_features': 1.0, 'min_samples_leaf': 1}","{'max_features': 1.0, 'min_samples_leaf': 5}"
+albert,4.0,1.0,3.0,2.0
+compas-two-years,2.0,1.0,4.0,3.0
+default-of-credit-card-clients,3.0,1.0,4.0,2.0
+electricity,3.0,4.0,1.0,2.0
+eye_movements,3.0,4.0,2.0,1.0
+road-safety,3.0,4.0,2.0,1.0

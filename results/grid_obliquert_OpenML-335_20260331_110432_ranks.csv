@@ -1,0 +1,14 @@
+dataset,"{'max_features': 'sqrt', 'min_samples_leaf': 1}","{'max_features': 'sqrt', 'min_samples_leaf': 5}","{'max_features': 1.0, 'min_samples_leaf': 1}","{'max_features': 1.0, 'min_samples_leaf': 5}"
+Bike_Sharing_Demand,3.0,4.0,1.0,2.0
+Brazilian_houses,3.0,4.0,1.0,2.0
+Mercedes_Benz_Greener_Manufacturing,3.0,1.0,4.0,2.0
+SGEMM_GPU_kernel_performance,4.0,3.0,2.0,1.0
+abalone,4.0,2.0,3.0,1.0
+analcatdata_supreme,3.0,4.0,2.0,1.0
+diamonds,3.0,4.0,1.0,2.0
+house_sales,3.0,4.0,1.0,2.0
+medical_charges,4.0,2.0,3.0,1.0
+particulate-matter-ukair-2017,2.0,3.0,4.0,1.0
+seattlecrime6,3.0,4.0,2.0,1.0
+topo_2_1,4.0,2.0,3.0,1.0
+visualizing_soil,4.0,3.0,1.0,2.0

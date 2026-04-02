@@ -1,0 +1,13 @@
+Benchmark: AEON-TSER
+Model: OBLIQUERT
+Run Timestamp: 20260331_110432
+Total GridSearch Time: 10933.28 minutes
+Time if Best Params used: 1493.33 minutes
+----------------------------------------
+Best Hyperparameters: {'max_features': 1.0, 'min_samples_leaf': 5}
+
+All Parameter Average Ranks (Lowest = Best):
+{'max_features': 1.0, 'min_samples_leaf': 5}       2.025641
+{'max_features': 'sqrt', 'min_samples_leaf': 5}    2.358974
+{'max_features': 1.0, 'min_samples_leaf': 1}       2.743590
+{'max_features': 'sqrt', 'min_samples_leaf': 1}    2.871795

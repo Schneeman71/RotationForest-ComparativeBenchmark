@@ -1,0 +1,13 @@
+Benchmark: OpenML-336
+Model: OBLIQUERT
+Run Timestamp: 20260331_110432
+Total GridSearch Time: 67.54 minutes
+Time if Best Params used: 27.76 minutes
+----------------------------------------
+Best Hyperparameters: {'max_features': 1.0, 'min_samples_leaf': 1}
+
+All Parameter Average Ranks (Lowest = Best):
+{'max_features': 1.0, 'min_samples_leaf': 1}       1.764706
+{'max_features': 1.0, 'min_samples_leaf': 5}       1.941176
+{'max_features': 'sqrt', 'min_samples_leaf': 1}    2.882353
+{'max_features': 'sqrt', 'min_samples_leaf': 5}    3.411765
