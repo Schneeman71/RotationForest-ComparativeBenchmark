@@ -22,15 +22,14 @@ def compile_best_scores():
     for f in files:
         filename = os.path.basename(f)
         
-        # Regex to parse 'model-benchmark.csv' (e.g., et-openml-297.csv)
-        # Groups: 1=model (everything up to first hyphen), 2=benchmark (everything after)
-        match = re.search(r'^([^-]+)-(.*)\.csv$', filename)
+        # Regex to parse 'model_benchmark.csv' (e.g., et_openml_297.csv)
+        match = re.search(r'^([^_]+)_(.*)\.csv$', filename)
             
         if match:
             model = match.group(1).lower()
             benchmark = match.group(2).lower()
         else:
-            print(f"Skipping {filename}, doesn't match 'model-benchmark.csv' pattern.")
+            print(f"Skipping {filename}, doesn't match 'model_benchmark.csv' pattern.")
             continue
 
         try:
@@ -40,18 +39,22 @@ def compile_best_scores():
             continue
         
         # Identify columns that are not scores
-        non_score_cols = ['dataset', 'seed', 'time_taken', 'status']
+        non_score_cols = ['dataset', 'model', 'seed', 'time_taken', 'status']
         score_cols = [c for c in df.columns if c not in non_score_cols and not c.startswith('time_')]
         
         # Coerce any string errors to numeric
         df[score_cols] = df[score_cols].apply(pd.to_numeric, errors='coerce')
         
+        # --- NEW: Process the 'time_taken' column ---
+        df['time_taken'] = pd.to_numeric(df['time_taken'], errors='coerce')
+        df_time_mean = df.groupby('dataset')['time_taken'].mean()
+        
         # Calculate BOTH mean and standard deviation across the 5 seeds for each dataset
         df_mean = df.groupby('dataset')[score_cols].mean()
         df_std = df.groupby('dataset')[score_cols].std()
         
-        # Determine task type to know whether we want the highest or lowest score
-        is_minimization = 'tser' in benchmark or '297' in benchmark or 'regression' in benchmark
+        # Determine task type (297, 335, 336 are regression. 334 and cc18 are classification)
+        is_minimization = 'tser' in benchmark or '297' in benchmark or '335' in benchmark or '336' in benchmark or 'regression' in benchmark
         task_type = 'regression' if is_minimization else 'classification'
         
         # Select the best hyperparameter COLUMN per dataset
@@ -60,14 +63,15 @@ def compile_best_scores():
         else:
             best_param_cols = df_mean.idxmax(axis=1) # col name with highest Accuracy/F1
             
-        # Extract the mean and std specifically for that ideal hyperparameter
+        # Extract the mean, std, and time specifically for that ideal hyperparameter
         best_records = []
         for dataset in df_mean.index:
             best_col = best_param_cols[dataset]
             best_records.append({
                 'dataset': dataset,
                 f'{model}_mean': df_mean.loc[dataset, best_col],
-                f'{model}_std': df_std.loc[dataset, best_col]
+                f'{model}_std': df_std.loc[dataset, best_col],
+                f'{model}_time': df_time_mean.loc[dataset] # --- NEW: Add the average time ---
             })
             
         # Convert to DataFrame
@@ -99,17 +103,17 @@ def compile_best_scores():
         final_dfs_to_merge
     )
     
-    # Reorder columns: dataset, benchmark, task_type, model1_mean, model1_std, model2_mean...
+    # Reorder columns: dataset, benchmark, task_type, model1_mean, model1_std, model1_time...
     base_cols = ['dataset', 'benchmark', 'task_type']
     model_cols = [c for c in consolidated_df.columns if c not in base_cols]
     
-    # Sort model columns so that _mean and _std for the same model are next to each other
+    # Sort model columns alphabetically so mean, std, and time for the same model are grouped
     model_cols.sort()
     
     consolidated_df = consolidated_df[base_cols + model_cols]
     
     consolidated_df.to_csv(output_file, index=False)
-    print(f"Successfully saved compiled scores with standard deviations to {output_file}!")
+    print(f"Successfully saved compiled scores with standard deviations and time to {output_file}!")
     print(consolidated_df.head())
 
 if __name__ == '__main__':

@@ -5,8 +5,16 @@ import scikit_posthocs as sp
 
 COMPILED_FILE = "consolidated_best_scores.csv"
 
-# ONLY process complete collections
-TARGET_BENCHMARKS = ["openml-297", "openml-cc18", "aeon-tsc", "aeon-tser"]
+# ONLY process complete collections (Fixed: Hyphens changed to underscores)
+TARGET_BENCHMARKS = [
+    "openml_297", 
+    "openml_334", 
+    "openml_335", 
+    "openml_336", 
+    "openml_cc18", 
+    "aeon_tsc", 
+    "aeon_tser"
+]
 
 def generate_cd_plot(benchmark, df_benchmark, task_type):
     """
